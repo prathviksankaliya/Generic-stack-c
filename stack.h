@@ -1,91 +1,112 @@
 #include <stdbool.h>
+#include <stdlib.h>
+struct stack
+{
+    int size;
+    int *arr;
+    int top;
+};
 
-int top = -1;
+void* init(int size){
+    struct stack *s = malloc(size*sizeof(struct stack));
+    if(s == NULL){
+        printf("Memory Error!!");
+    }else{
+        s->size = size;
+        s->top = -1;
+        s->arr = (int *) malloc(size * sizeof(int));
+        if(s->arr != NULL){
+            return s;
+        }else{
+            printf("Memory Error!!");
+        }   
+    }
+}
 
 // Return bool if Stack is Empty or not
-bool isEmpty(int *arr, int size)
+bool isEmpty(struct stack *s)
 {
-    return top == -1;
+    return s->top == -1;
 }
 
 // Return bool if Stack is Full or not
-bool isFull(int *arr, int size)
+bool isFull(struct stack *s)
 {
-    return top == size - 1;
+    return s->top == s->size - 1;
 }
 
 // Push Element on Stack if Stack is Not full
-void push(int *arr, int size, int element)
+void push(struct stack *s, int element)
 {
-    if (isFull(arr, size))
+    if (isFull(s))
     {
         printf("\nStack is Overflow!!\n");
     }
     else
     {
-        arr[++top] = element;
+        s->arr[++s->top] = element;
     }
 }
 
 // Return Pop Element if Stack is Not Empty
-int pop(int *arr, int size)
+int pop(struct stack *s)
 {
-    if (isEmpty(arr, size))
+    if (isEmpty(s))
     {
         printf("\nStack is Underflow!!\n");
     }
     else
     {
-        return arr[top--];
+        return s->arr[s->top--];
     }
 }
 // Diplay all the Elments
-void display(int *arr, int size)
+void display(struct stack *s)
 {
-    if (isEmpty(arr, size))
+    if (isEmpty(s))
     {
         printf("\nStack is Underflow!!\n");
     }
     else
     {
         printf("\nDisplay all the  elements: \n");
-        for (int i = top; i >= 0; i--)
+        for (int i = s->top; i >= 0; i--)
         {
-            printf("|\t%d\t|\n", arr[i]);
+            printf("|\t%d\t|\n", s->arr[i]);
         }
     }
 }
 
 // Return the peak element of Stack if Stack is not Empty
-int peak(int *arr, int size)
+int peak(struct stack *s)
 {
-    if (isEmpty(arr, size))
+    if (isEmpty(s))
     {
         printf("\nStack is Underflow!!\n");
     }
     else
     {
-        return arr[top];
+        return s->arr[s->top];
     }
 }
 
 // Change any Element on Stack just Passing postion and new Elements
-void change(int *arr, int size, int position, int newElement)
+void change(struct stack *s, int position, int newElement)
 {
-    if (position > top)
+    if (position > s->top)
     {
         printf("\nPostion is Invalid!!\n");
     }
     else
     {
-        arr[position] = newElement;
+        s->arr[position] = newElement;
     }
 }
 
-int displaySize()
+int displaySize(struct stack *s)
 {
     int count = 0;
-    for (int i = top; i >= 0; i--)
+    for (int i = s->top; i >= 0; i--)
     {
         count++;
     }
